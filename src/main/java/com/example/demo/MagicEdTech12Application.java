@@ -1,9 +1,7 @@
 package com.example.demo;
 
-import java.io.File;
-
-import javax.xml.stream.XMLStreamReader;
-
+import com.example.demo.model.Assessment;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -17,9 +15,9 @@ public class MagicEdTech12Application {
 		SpringApplication.run(MagicEdTech12Application.class, args);
 		
 		 try {
-	         XmlMapper xmlMapper = new XmlMapper();
-	         Employee pojo = xmlMapper.readValue(getXmlString(), Employee.class);
-	         System.out.println(pojo);
+	         ObjectMapper objectMapper = new ObjectMapper();
+	         Assessment assessment = objectMapper.readValue(getXmlString(), Assessment.class);
+	         System.out.println(assessment);
 	      } catch(Exception e) {
 	         e.printStackTrace();
 	      } 
@@ -27,25 +25,7 @@ public class MagicEdTech12Application {
 
 	private static String getXmlString() {
 		
-		 return "<TemplateID>"
-							+"<templateId>001</templateId>"
-					 		+ " <templateName>MCQ</templateName>"
-					 		+ " <topic>Congruence and Similarity</topic>"
-					 		+ " <questionSerialNo>1</questionSerialNo>"
-					 		+ " <subtopic>Introduction</subtopic>"
-					 		+ " <instructions>None</instructions>"
-					 		+ " <questionText>In given figure $\\mathrm{D}$ and $\\mathrm{E}$ are\n"
-					 		+ "			respectively the points on the sides $\\mathrm{BA}$ and $\\mathrm{BC}$\n"
-					 		+ "			of a $\\triangle \\mathrm{ABC}$ such that $\\mathrm{BD}=5 \\mathrm{~cm},\n"
-					 		+ "			\\mathrm{BE}=4.2 \\mathrm{~cm}, \\mathrm{BA}=15 \\mathrm{~cm}$, and\n"
-					 		+ "			$\\mathrm{DE} \\| \\mathrm{AC}$, find $\\mathrm{BC}$.</questionText>"
-			                + "<options>A ) 26.4\n"
-			                + "			B )13.2\n"
-			                + "			C) 8.8\n"
-			                + "			D) 12.6</options>"
-			                + "<answer>D</answer>"
-							+ "<solution> asdasok</solution>" 
-                + "</TemplateID>";
+		 return "{\r\n  \"templateId\": \"001\",\r\n  \"templateName\": \"MCQ\",\r\n  \"quizzes\": [\r\n    {\r\n      \"topic\": \"Congruence and Similarity\",\r\n      \"questionSerialNo\": \"1\",\r\n      \"subtopic\": \"Introduction\",\r\n      \"instructions\": \"None\",\r\n      \"questionText\": \"In given figure $\\\\mathrm{D}$ and $\\\\mathrm{E}$ are respectively the points on the sides $\\\\mathrm{BA}$ and $\\\\mathrm{BC}$ of a $\\\\triangle \\\\mathrm{ABC}$ such that $\\\\mathrm{BD}=5 \\\\mathrm{~cm}, \\\\mathrm{BE}=4.2 \\\\mathrm{~cm}, \\\\mathrm{BA}=15 \\\\mathrm{~cm}$, and $\\\\mathrm{DE} \\\\| \\\\mathrm{AC}$, find $\\\\mathrm{BC}$.\",\r\n      \"options\": {\r\n        \"A\": \"26.4\",\r\n        \"B\": \"13.2\",\r\n        \"C\": \"8.8\",\r\n        \"D\": \"12.6\"\r\n      },\r\n      \"answer\": \"D\",\r\n      \"solution\": \"asdasok\"\r\n    },\r\n    {\r\n      \"topic\": \"Congruence and Similarity\",\r\n      \"questionSerialNo\": \"1\",\r\n      \"subtopic\": \"Introduction\",\r\n      \"instructions\": \"None\",\r\n      \"questionText\": \"In given figure $\\\\mathrm{D}$ and $\\\\mathrm{E}$ are respectively the points on the sides $\\\\mathrm{BA}$ and $\\\\mathrm{BC}$ of a $\\\\triangle \\\\mathrm{ABC}$ such that $\\\\mathrm{BD}=5 \\\\mathrm{~cm}, \\\\mathrm{BE}=4.2 \\\\mathrm{~cm}, \\\\mathrm{BA}=15 \\\\mathrm{~cm}$, and $\\\\mathrm{DE} \\\\| \\\\mathrm{AC}$, find $\\\\mathrm{BC}$.\",\r\n      \"options\": {\r\n        \"A\": \"26.4\",\r\n        \"B\": \"13.2\",\r\n        \"C\": \"8.8\",\r\n        \"D\": \"12.6\"\r\n      },\r\n      \"answer\": \"D\",\r\n      \"solution\": \"asdasok\"\r\n    }\r\n  ]\r\n}";
 	}
 		
 	}
