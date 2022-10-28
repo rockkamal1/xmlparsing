@@ -1,0 +1,27 @@
+<!-- <?xml version = "1.0"?>
+<class>
+	<TemplateID templateId="001">
+		<templateName>MCQ</templateName>
+		<topic>Congruence and Similarity</topic>
+		<questionSerialNo>1</questionSerialNo>
+		<subtopic>Introduction</subtopic>
+		<instructions>None</instructions>
+		<questionText>In given figure $\mathrm{D}$ and $\mathrm{E}$ are
+			respectively the points on the sides $\mathrm{BA}$ and $\mathrm{BC}$
+			of a $\triangle \mathrm{ABC}$ such that $\mathrm{BD}=5 \mathrm{~cm},
+			\mathrm{BE}=4.2 \mathrm{~cm}, \mathrm{BA}=15 \mathrm{~cm}$, and
+			$\mathrm{DE} \| \mathrm{AC}$, find $\mathrm{BC}$.</questionText>
+
+		<options>A ) 26.4
+			B )13.2
+			C) 8.8
+			D) 12.6
+		</options>
+		<answer>D</answer>
+		<Solution>XTEFJNFJMG</Solution>
+	</TemplateID>
+
+
+
+
+</class> -->
