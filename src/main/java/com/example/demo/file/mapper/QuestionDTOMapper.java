@@ -1,11 +1,10 @@
-package com.example.demo.mapper;
+package com.example.demo.file.mapper;
 
-import com.example.demo.dto.QuestionDTO;
-import com.example.demo.dto.SubTopicDTO;
-import com.example.demo.model.Quiz;
+import com.example.demo.file.dto.QuestionDTO;
+import com.example.demo.file.dto.SubTopicDTO;
+import com.example.demo.file.model.Quiz;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.UUID;
 
 public class QuestionDTOMapper {

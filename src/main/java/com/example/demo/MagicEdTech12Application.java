@@ -1,12 +1,9 @@
 package com.example.demo;
 
-import com.example.demo.model.Assessment;
+import com.example.demo.file.model.Assessment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 @SpringBootApplication
 public class MagicEdTech12Application {

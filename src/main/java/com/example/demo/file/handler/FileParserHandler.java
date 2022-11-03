@@ -1,12 +1,11 @@
-package com.example.demo.handler;
+package com.example.demo.file.handler;
 
-import com.example.demo.dto.QuestionDTO;
+import com.example.demo.file.dto.QuestionDTO;
+import com.example.demo.file.model.Assessment;
+import com.example.demo.file.model.Quiz;
 import com.example.demo.file.parser.FileParser;
-import com.example.demo.helper.ObjectMapperHelper;
-import com.example.demo.mapper.QuestionDTOMapper;
-import com.example.demo.model.Assessment;
-import com.example.demo.model.Quiz;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.demo.file.helper.ObjectMapperHelper;
+import com.example.demo.file.mapper.QuestionDTOMapper;
 
 import java.io.File;
 import java.util.ArrayList;

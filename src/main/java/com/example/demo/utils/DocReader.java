@@ -1,13 +1,9 @@
 package com.example.demo.utils;
 
-import com.example.demo.file.parser.FileParser;
-import com.example.demo.handler.FileParserHandler;
-import com.example.demo.helper.ObjectMapperHelper;
-import com.example.demo.model.Assessment;
+import com.example.demo.file.handler.FileParserHandler;
 import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;

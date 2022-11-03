@@ -1,6 +1,6 @@
-package com.example.demo.helper;
+package com.example.demo.file.helper;
 
-import com.example.demo.model.Assessment;
+import com.example.demo.file.model.Assessment;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
