@@ -202,7 +202,7 @@ public class DocReader {
         return elementMap;
     }
 
-    static Map<String, Object> templateSeggregation() {
+    static Map<String, Object> templateSegregation() {
         AtomicInteger index = new AtomicInteger(0);
         Map<String, Object> assessmentMap = new HashMap<>();
         quizzes.forEach((template) -> {

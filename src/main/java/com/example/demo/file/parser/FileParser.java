@@ -146,7 +146,7 @@ public class FileParser {
         return elementMap;
     }
 
-    private Map<String, Object> templateSeggregation() {
+    private Map<String, Object> templateSegregation() {
         AtomicInteger index = new AtomicInteger(0);
         Map<String, Object> assessmentMap = new HashMap<>();
         quizzes.forEach((template) -> {
@@ -173,7 +173,7 @@ public class FileParser {
         XWPFDocument document = new XWPFDocument(new FileInputStream(uploadedFile));
         traverseBodyElements(document.getBodyElements());
         document.close();
-        Map<String, Object> assessmentMap = templateSeggregation();
+        Map<String, Object> assessmentMap = templateSegregation();
         return assessmentMap;
     }
 }
