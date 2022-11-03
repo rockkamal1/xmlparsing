@@ -1,15 +1,23 @@
 package com.example.demo.file.mapper;
 
+import com.example.demo.file.dto.OptionDTO;
 import com.example.demo.file.dto.QuestionDTO;
 import com.example.demo.file.dto.SubTopicDTO;
 import com.example.demo.file.model.Quiz;
 
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
 
 public class QuestionDTOMapper {
 
     public static QuestionDTO getQuestionDTO(Quiz quiz) {
+        List<OptionDTO> optionDTOList = new ArrayList<>();
+        quiz.getOptions().forEach((k, v) -> {
+            optionDTOList.add(OptionDTO.builder()
+                    .option(k)
+                    .value(String.valueOf(v))
+                    .optionType("text").build());
+        });
+
         return QuestionDTO.builder()
                 .id(UUID.randomUUID().toString())
                 .serialNumber(Integer.valueOf(quiz.getQuestionSerialNo()))
@@ -31,6 +39,8 @@ public class QuestionDTOMapper {
                 .qualityGrade(quiz.getQualityGrade())
                 .isGuided("Yes") //check the template for value
                 .primaryConcept(quiz.getConceptTips())
+                .options(optionDTOList)
                 .build();
     }
+
 }
