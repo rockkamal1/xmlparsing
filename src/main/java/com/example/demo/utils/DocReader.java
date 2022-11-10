@@ -4,6 +4,7 @@ import com.example.demo.file.handler.FileParserHandler;
 import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -66,16 +67,20 @@ public class DocReader {
         return summary;
     }
 
-    static void traversePictures(XWPFRun run, List<XWPFPicture> pictures) throws Exception {
+    static Map<String, Object> traversePictures(Map<String, Object> elementValue, List<XWPFPicture> pictures) throws Exception {
+        Map<String, Object> imageMap = new HashMap<>();
+        AtomicInteger i = new AtomicInteger(0);
         for (XWPFPicture picture : pictures) {
-            //System.out.println(picture);
-
-            /*String picturesNonVisualDrawingProps = getSummary(getNonVisualDrawingProps(getInlineOrAnchor(run, picture)));
-            System.out.println(picturesNonVisualDrawingProps);*/
-
             XWPFPictureData pictureData = picture.getPictureData();
             System.out.println(pictureData);
+            Map<String, Object> tempMap = new HashMap<>();
+            tempMap.put("name", pictureData.getFileName());
+            tempMap.put("type", "image/"+pictureData.suggestFileExtension());
+
+            imageMap.put(String.valueOf(i.getAndIncrement()), tempMap);
         }
+
+        return imageMap;
     }
     static Map<String, Object> traverseRunElements(List<IRunElement> runElements) throws Exception {
         Map<String, Object> elementValue = new HashMap<>();
@@ -84,24 +89,35 @@ public class DocReader {
             if (runElement instanceof XWPFFieldRun) {
                 XWPFFieldRun fieldRun = (XWPFFieldRun)runElement;
                 //System.out.println(fieldRun.getClass().getName());
-                if(fieldRun.text().equals(""))
+                if(fieldRun.text().equals("") && fieldRun.getEmbeddedPictures().isEmpty())
                     break;
-                elementValue.put(String.valueOf(i.getAndIncrement()), fieldRun.text());
-                traversePictures(fieldRun, fieldRun.getEmbeddedPictures());
+                if(!fieldRun.text().equals(""))
+                    elementValue.put(String.valueOf(i.getAndIncrement()), fieldRun.text());
+                else if(!fieldRun.getEmbeddedPictures().isEmpty()) {
+                    elementValue.put(String.valueOf(i.getAndIncrement()),
+                            traversePictures(elementValue, fieldRun.getEmbeddedPictures()));
+                }
             } else if (runElement instanceof XWPFHyperlinkRun) {
                 XWPFHyperlinkRun hyperlinkRun = (XWPFHyperlinkRun)runElement;
                 //System.out.println(hyperlinkRun.getClass().getName());
-                if(hyperlinkRun.text().equals(""))
+                if(hyperlinkRun.text().equals("") && hyperlinkRun.getEmbeddedPictures().isEmpty())
                     break;
-                elementValue.put(String.valueOf(i), hyperlinkRun.text());
-                traversePictures(hyperlinkRun, hyperlinkRun.getEmbeddedPictures());
+                if(!hyperlinkRun.text().equals(""))
+                    elementValue.put(String.valueOf(i), hyperlinkRun.text());
+                else if (!hyperlinkRun.getEmbeddedPictures().isEmpty()) {
+                    elementValue.put(String.valueOf(i),
+                            traversePictures(elementValue, hyperlinkRun.getEmbeddedPictures()));
+                }
             } else if (runElement instanceof XWPFRun) {
                 XWPFRun run = (XWPFRun)runElement;
-                //System.out.println(run.getClass().getName());
-                if(run.text().equals(""))
+                if(run.text().equals("") && run.getEmbeddedPictures().isEmpty())
                     break;
-                elementValue.put(String.valueOf(i), run.text());
-                traversePictures(run, run.getEmbeddedPictures());
+                if(!run.text().equals(""))
+                    elementValue.put(String.valueOf(i), run.text());
+                else if (!run.getEmbeddedPictures().isEmpty()) {
+                    elementValue.put(String.valueOf(i),
+                            traversePictures(elementValue, run.getEmbeddedPictures()));
+                }
             } else if (runElement instanceof XWPFSDT) {
                 XWPFSDT sDT = (XWPFSDT)runElement;
                 System.out.println(sDT);
@@ -111,9 +127,9 @@ public class DocReader {
         }
         return elementValue;
     }
-    static Map<String, String> traverseTableCells(List<ICell> tableICells) throws Exception {
-        List<String> cellValues = new ArrayList<>();
-        Map<String, String> assessment = new HashMap<>();
+    static Map<String, Object> traverseTableCells(List<ICell> tableICells) throws Exception {
+        List<Object> cellValues = new ArrayList<>();
+        Map<String, Object> assessment = new HashMap<>();
         for (ICell tableICell : tableICells) {
             if (tableICell instanceof XWPFSDTCell) {
                 XWPFSDTCell sDTCell = (XWPFSDTCell)tableICell;
@@ -123,13 +139,29 @@ public class DocReader {
                 XWPFTableCell tableCell = (XWPFTableCell)tableICell;
                 //System.out.println(tableCell);
                 cellValues.addAll(traverseBodyElements(tableCell.getBodyElements())
-                        .values().stream().map(String::valueOf).collect(Collectors.toList()));
+                        .values().stream().collect(Collectors.toList()));
             }
         }
 
         if(tableICells.size() == 2) {
-            assessment.put(cellValues.remove(0),
-                    cellValues.stream().map(String::valueOf).collect(Collectors.joining(" ")));
+            String key = (String) cellValues.remove(0);
+            String value = cellValues.stream()
+                    .filter(val -> val instanceof String)
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(" "));
+            List<Map<String, Object>> imageMap = cellValues.stream()
+                    .filter(val -> val instanceof Map)
+                    .map(val -> ((Map<String, Object>) val)).collect(Collectors.toList());
+            Map<String, Object> tempMap = new HashMap<>();
+            if(!(value.isEmpty() || value.isBlank()))
+                tempMap.put("textContent", value);
+            tempMap.put("imgContent", imageMap);
+
+            if(imageMap.isEmpty()) {
+                assessment.put(key, value);
+            } else {
+                assessment.put(key, tempMap);
+            }
         }
 
         return assessment;
@@ -137,7 +169,7 @@ public class DocReader {
 
     static Map<String, Object> traverseTableRows(List<XWPFTableRow> tableRows) throws Exception {
         Map<String, Object> assessment = new HashMap<>();
-        Map<String, String> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>();
         boolean nonTwoCellsRows = false;
         String temp = "";
         for (XWPFTableRow tableRow : tableRows) {
@@ -220,11 +252,17 @@ public class DocReader {
         return assessmentMap;
     }
 
+    public static Map<String, Object> fileParser(File uploadedFile) throws Exception {
+        XWPFDocument document = new XWPFDocument(new FileInputStream(uploadedFile));
+        traverseBodyElements(document.getBodyElements());
+        document.close();
+        Map<String, Object> assessmentMap = templateSegregation();
+        return assessmentMap;
+    }
     public static void main(String[] args) throws Exception {
         String inFilePath = "/Users/atulkumar/development-workspace/pocs/xmlparsing/src/main/resources/static/Examfactor_Samples_Questions.docx";
         File uploadedFile = new File(inFilePath);
-        FileParserHandler fileParserHandler = new FileParserHandler();
-        String json = fileParserHandler.getTemplateQuestions(uploadedFile);
-        System.out.println(json);
+        fileParser(uploadedFile);
+        //System.out.println(json);
     }
 }
