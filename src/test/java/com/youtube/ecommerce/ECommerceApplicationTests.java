@@ -1,10 +1,10 @@
-package com.youtube.jwt;
+package com.youtube.commerce;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JwtYoutubeApplicationTests {
+class ECommerceApplicationTests {
 
     @Test
     void contextLoads() {

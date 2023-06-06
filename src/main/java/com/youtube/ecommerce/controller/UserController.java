@@ -1,7 +1,7 @@
-package com.youtube.jwt.controller;
+package com.youtube.commerce.controller;
 
-import com.youtube.jwt.entity.User;
-import com.youtube.jwt.service.UserService;
+import com.youtube.commerce.entity.User;
+import com.youtube.commerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
