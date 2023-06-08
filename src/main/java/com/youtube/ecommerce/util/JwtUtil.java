@@ -1,4 +1,4 @@
-package com.youtube.commerce.util;
+package com.youtube.ecommerce.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

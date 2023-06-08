@@ -1,4 +1,4 @@
-package com.youtube.commerce.entity;
+package com.youtube.ecommerce.entity;
 
 public class JwtRequest {
 

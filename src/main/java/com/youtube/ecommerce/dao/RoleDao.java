@@ -1,6 +1,6 @@
-package com.youtube.commerce.dao;
+package com.youtube.ecommerce.dao;
 
-import com.youtube.commerce.entity.Role;
+import com.youtube.ecommerce.entity.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

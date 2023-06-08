@@ -1,7 +1,7 @@
-package com.youtube.commerce.controller;
+package com.youtube.ecommerce.controller;
 
-import com.youtube.commerce.entity.Role;
-import com.youtube.commerce.service.RoleService;
+import com.youtube.ecommerce.entity.Role;
+import com.youtube.ecommerce.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

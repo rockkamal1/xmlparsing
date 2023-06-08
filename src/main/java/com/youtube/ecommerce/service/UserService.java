@@ -1,9 +1,9 @@
-package com.youtube.commerce.service;
+package com.youtube.ecommerce.service;
 
-import com.youtube.commerce.dao.RoleDao;
-import com.youtube.commerce.dao.UserDao;
-import com.youtube.commerce.entity.Role;
-import com.youtube.commerce.entity.User;
+import com.youtube.ecommerce.dao.RoleDao;
+import com.youtube.ecommerce.dao.UserDao;
+import com.youtube.ecommerce.entity.Role;
+import com.youtube.ecommerce.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,15 +45,15 @@ public class UserService {
         adminUser.setRole(adminRoles);
         userDao.save(adminUser);
 
-//        User user = new User();
-//        user.setUserName("raj123");
-//        user.setUserPassword(getEncodedPassword("raj@123"));
-//        user.setUserFirstName("raj");
-//        user.setUserLastName("sharma");
-//        Set<Role> userRoles = new HashSet<>();
-//        userRoles.add(userRole);
-//        user.setRole(userRoles);
-//        userDao.save(user);
+       User user = new User();
+       user.setUserName("kamal123");
+        user.setUserPassword(getEncodedPassword("kamal@123"));
+        user.setUserFirstName("kamal");
+       user.setUserLastName("rock");
+        Set<Role> userRoles = new HashSet<>();
+       userRoles.add(userRole);
+       user.setRole(userRoles);
+        userDao.save(user);
     }
 
     public User registerNewUser(User user) {
