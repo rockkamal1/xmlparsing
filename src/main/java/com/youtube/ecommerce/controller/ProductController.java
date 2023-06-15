@@ -6,7 +6,6 @@ import com.youtube.ecommerce.entity.Product;
 import com.youtube.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,8 +57,11 @@ public class ProductController {
     }
    // @PreAuthorize("hasRole('Admin')")
     @GetMapping({"/getAllProducts"})
-    public List<Product> getAllProducts(){
-        return productService.getAllProducts();
+    public List<Product> getAllProducts(@RequestParam(defaultValue = "0") int pageNumber,
+                                        @RequestParam(defaultValue = "") String searchKey){
+        List<Product> result= productService.getAllProducts(pageNumber,searchKey);
+        System.out.println("Result is ->"+result.size());
+        return result;
 
     }
     @PreAuthorize("hasRole('Admin')")

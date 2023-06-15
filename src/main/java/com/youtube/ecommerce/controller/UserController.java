@@ -23,9 +23,14 @@ public class UserController {
     }
 
     @PostMapping({"/registerNewUser"})
-    public User registerNewUser(@RequestBody User user) {
+    public User registerNewUser(@RequestBody User user){
         return userService.registerNewUser(user);
     }
+
+//    @PostMapping({"/registerNewUser"})
+//    public User registerNewUser(@RequestBody User user) {
+//        return userService.registerNewUser(user);
+//    }
 
     @GetMapping({"/forAdmin"})
     @PreAuthorize("hasRole('Admin')")
