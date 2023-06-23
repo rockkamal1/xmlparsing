@@ -17,11 +17,12 @@ public class OrderDetail {
 
     @OneToOne
     private Product product;
+
+    private String transactionId;
     @OneToOne
     private User user;
 
-
-    public OrderDetail(String orderFullName, String orderFullAddress, String orderContactNumber, String orderAlternateContactNumber, String orderStatus, Double orderAmount, Product product, User user) {
+    public OrderDetail(String orderFullName, String orderFullAddress, String orderContactNumber, String orderAlternateContactNumber, String orderStatus, Double orderAmount, Product product, String transactionId, User user) {
         this.orderFullName = orderFullName;
         this.orderFullAddress = orderFullAddress;
         this.orderContactNumber = orderContactNumber;
@@ -29,11 +30,14 @@ public class OrderDetail {
         this.orderStatus = orderStatus;
         this.orderAmount = orderAmount;
         this.product = product;
+        this.transactionId = transactionId;
         this.user = user;
     }
 
     public OrderDetail() {
     }
+
+
 
     public Integer getOrderId() {
         return orderId;

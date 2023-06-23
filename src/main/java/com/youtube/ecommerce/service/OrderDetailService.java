@@ -1,11 +1,14 @@
 package com.youtube.ecommerce.service;
 
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
 import com.youtube.ecommerce.configuration.JwtRequestFilter;
 import com.youtube.ecommerce.dao.CartDao;
 import com.youtube.ecommerce.dao.OrderDetailDao;
 import com.youtube.ecommerce.dao.ProductDao;
 import com.youtube.ecommerce.dao.UserDao;
 import com.youtube.ecommerce.entity.*;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,9 @@ import java.util.List;
 public class OrderDetailService {
 
     private static final String ORDER_PLACED="Placed";
+    private static final String KEY = "rzp_test_nfLQh11FeT4D1V";
+    private static final String KEY_SECRET = "XEcxr0JlKe21wKiFUCZ8Bshz";
+    private static final String CURRENCY = "INR";
 
     @Autowired
     private OrderDetailDao orderDetailDao;
@@ -47,17 +53,18 @@ public class OrderDetailService {
            String currentUser = JwtRequestFilter.CURRENT_USER;
           User user= userDao.findById(currentUser).get();
            OrderDetail orderDetail=new OrderDetail(
-                   orderInput.getFullName(),
-                   orderInput.getFullAddress(),
-                   orderInput.getContactNumber(),
-                   orderInput.getAlternateContactNumber(),
-                   ORDER_PLACED,
-                  product.getProductDiscountedPrice()*o.getQuantity(),
-                   product,
+                              orderInput.getFullName(),
+                              orderInput.getFullAddress(),
+                              orderInput.getContactNumber(),
+                              orderInput.getAlternateContactNumber(),
+                              ORDER_PLACED,
+                             product.getProductDiscountedPrice()*o.getQuantity(),
+                              product,
+                   orderInput.getTransactionId(),
                    user
 
 
-           );
+                      );
            //empty the cart
            if(!isSingleProductCheckout){
                List<Cart> carts= cartDao.findByUser(user);
@@ -88,6 +95,37 @@ public class OrderDetailService {
            orderDetail.setOrderStatus("Delivered");
            orderDetailDao.save(orderDetail);
        }
+
+
+   }
+
+   public TransactionDetails createTransaction(Double amount){
+
+       JSONObject jsonObject=new JSONObject();
+       jsonObject.put("amount",(amount*100));
+       jsonObject.put("currency",CURRENCY);
+
+        try {
+            RazorpayClient razorpayClient = new RazorpayClient(KEY,KEY_SECRET);
+            Order order=razorpayClient.orders.create(jsonObject);
+            System.out.println(order);
+            return prepareTransactionDetails(order);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+
+
+   }
+   private TransactionDetails prepareTransactionDetails(Order order){
+        String orderId=order.get("id");
+        String currency=order.get("currency");
+        Integer amount=order.get("amount");
+
+        TransactionDetails transactionDetails=new TransactionDetails(orderId,currency,amount,KEY);
+        return transactionDetails;
+
 
 
    }
