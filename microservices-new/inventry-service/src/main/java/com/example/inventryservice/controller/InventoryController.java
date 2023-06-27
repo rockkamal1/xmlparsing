@@ -24,6 +24,5 @@ public class InventoryController {
     public List<InventoryResponse> IsInStock(@RequestParam List<String> skuCode){
     return inventoryService.IsInStock(skuCode);
 
-
     }
 }
